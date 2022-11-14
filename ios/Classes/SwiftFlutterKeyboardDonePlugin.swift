@@ -12,7 +12,7 @@ public class SwiftFlutterKeyboardDonePlugin: NSObject, FlutterPlugin {
     init(_ channel: FlutterMethodChannel) {
         super.init()
         self.channel = channel
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardShow), name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 

@@ -2,6 +2,8 @@
 
 A new Flutter Plugin for IOS where show a done button when you inputing somethings.
 
+<img src="screen_shot.jpg"/>
+
 ## Getting Started
 
 #### Import
