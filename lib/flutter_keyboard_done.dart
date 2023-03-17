@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,11 +17,17 @@ abstract class FlutterKeyboardDoneListener {
   void onHidde();
 }
 
+/// used in your page root stack
 class FlutterKeyboardDoneWidget extends StatefulWidget {
   late Widget child;
   WidgetBuilder? doneWidgetBuilder;
+  bool? androidShow;
+  VoidCallback? onOpen;
+  VoidCallback? onDismiss;
+  VoidCallback? onFinishClick;
 
-  FlutterKeyboardDoneWidget({required this.child, this.doneWidgetBuilder, Key? key}) : super(key: key);
+  FlutterKeyboardDoneWidget({required this.child, this.doneWidgetBuilder, this.androidShow = false, this.onOpen, this.onDismiss, this.onFinishClick,Key? key})
+      : super(key: key);
 
   @override
   State<FlutterKeyboardDoneWidget> createState() => _FlutterKeyboardDoneWidgetState();
@@ -48,14 +56,19 @@ class _FlutterKeyboardDoneWidgetState extends State<FlutterKeyboardDoneWidget> w
   @override
   void onHidde() {
     if (_overlayEntry != null) {
+      widget.onDismiss?.call();
       _overlayEntry?.remove();
       _overlayEntry = null;
     }
   }
+
   final FocusNode _blankNode = FocusNode();
+
   @override
   void onShow() {
-    if(_overlayEntry != null) return;
+    if (_overlayEntry != null) return;
+    widget.onOpen?.call();
+    if (Platform.isAndroid && widget.androidShow == false) return;
     var overLay = Overlay.of(context);
     _overlayEntry = OverlayEntry(builder: (context) {
       return Positioned(
@@ -72,6 +85,7 @@ class _FlutterKeyboardDoneWidgetState extends State<FlutterKeyboardDoneWidget> w
             child: CupertinoButton(
               padding: EdgeInsets.zero,
               onPressed: () {
+                widget.onFinishClick?.call();
                 FocusScope.of(context).requestFocus(_blankNode);
                 // FocusScope.of(context).focusedChild?.unfocus();
               },

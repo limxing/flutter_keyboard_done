@@ -21,11 +21,11 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: FlutterKeyboardDoneWidget(
         child: Scaffold(
-          appBar: AppBar(
-            title: Text('Plugin example app'),
-          ),
           body: const Center(
             child: TextField(),
+          ),
+          appBar: AppBar(
+            title: Text('Plugin example app'),
           ),
         ),
       ),
